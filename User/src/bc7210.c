@@ -8,20 +8,20 @@ static void Bc7210_GPIOInit(void)
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
 	
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA|RCC_AHB1Periph_GPIOB,ENABLE);
-	/* IR_SS--¸´ÓÃ¸¡¿ÕÊäÈëPA15 */
+	/* IR_SS--å¤ç”¨æµ®ç©ºè¾“å…¥PA15 */
 	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_15;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF; 
 	GPIO_Init(IR_SS_PORT, &GPIO_InitStruct);
 	GPIO_PinAFConfig(GPIOA,GPIO_PinSource15,GPIO_AF_SPI3);
-	/* IR_DAT--¸´ÓÃ¸¡¿ÕÊäÈëPB5 */
+	/* IR_DAT--å¤ç”¨æµ®ç©ºè¾“å…¥PB5 */
 	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_5;
 	GPIO_Init(GPIOB, &GPIO_InitStruct);
 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource5,GPIO_AF_SPI3);
-	/* IR_SCK--¸´ÓÃ¸¡¿ÕÊäÈëPB3 */
+	/* IR_SCK--å¤ç”¨æµ®ç©ºè¾“å…¥PB3 */
 	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_3;
 	GPIO_Init(GPIOB, &GPIO_InitStruct);	
 	GPIO_PinAFConfig(GPIOB,GPIO_PinSource3,GPIO_AF_SPI3);
-	/* IR_ACK--ÆÕÍ¨¸¡¿ÕÊäÈë */
+	/* IR_ACK--æ™®é€šæµ®ç©ºè¾“å…¥ */
 	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_4;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
@@ -32,26 +32,26 @@ static void Bc7210_SPIInit(void)
 {
 	SPI_InitTypeDef SPI_InitStruct = {0};
 	NVIC_InitTypeDef NVIC_InitStruct = {0};
-	/* ´ò¿ªSPIÊ±ÖÓ */
+	/* æ‰“å¼€SPIæ—¶é’Ÿ */
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI3, ENABLE);
-	/* ³õÊ¼»¯SPI */
-	SPI_InitStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;//SPI ÉèÖÃÎªË«ÏßË«ÏòÈ«Ë«¹¤
-	SPI_InitStruct.SPI_Mode = SPI_Mode_Slave;     //ÉèÖÃÎª´ÓSPI 
-	SPI_InitStruct.SPI_DataSize = SPI_DataSize_8b;//SPI ·¢ËÍ½ÓÊÕ 8 Î»Ö¡½á¹¹
-	SPI_InitStruct.SPI_CPOL = SPI_CPOL_Low;       //Ê±ÖÓĞü¿ÕµÍ
-	SPI_InitStruct.SPI_CPHA = SPI_CPHA_2Edge;     //Êı¾İ²¶»ñÓÚµÚÒ»¸öÊ±ÖÓÑØ
-	SPI_InitStruct.SPI_NSS = SPI_NSS_Hard;        //ÄÚ²¿ NSS ĞÅºÅÓĞ SSI Î»¿ØÖÆ
-	SPI_InitStruct.SPI_FirstBit = SPI_FirstBit_LSB;//Êı¾İ´«Êä´Ó LSB Î»¿ªÊ¼
-	SPI_InitStruct.SPI_CRCPolynomial = 7;          //ÓÃÓÚ CRC Öµ¼ÆËãµÄ¶àÏîÊ½
+	/* åˆå§‹åŒ–SPI */
+	SPI_InitStruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;//SPI è®¾ç½®ä¸ºåŒçº¿åŒå‘å…¨åŒå·¥
+	SPI_InitStruct.SPI_Mode = SPI_Mode_Slave;     //è®¾ç½®ä¸ºä»SPI 
+	SPI_InitStruct.SPI_DataSize = SPI_DataSize_8b;//SPI å‘é€æ¥æ”¶ 8 ä½å¸§ç»“æ„
+	SPI_InitStruct.SPI_CPOL = SPI_CPOL_Low;       //æ—¶é’Ÿæ‚¬ç©ºä½
+	SPI_InitStruct.SPI_CPHA = SPI_CPHA_2Edge;     //æ•°æ®æ•è·äºç¬¬ä¸€ä¸ªæ—¶é’Ÿæ²¿
+	SPI_InitStruct.SPI_NSS = SPI_NSS_Hard;        //å†…éƒ¨ NSS ä¿¡å·æœ‰ SSI ä½æ§åˆ¶
+	SPI_InitStruct.SPI_FirstBit = SPI_FirstBit_LSB;//æ•°æ®ä¼ è¾“ä» LSB ä½å¼€å§‹
+	SPI_InitStruct.SPI_CRCPolynomial = 7;          //ç”¨äº CRC å€¼è®¡ç®—çš„å¤šé¡¹å¼
 	SPI_Init(SPI3, &SPI_InitStruct);
-	/* Ê¹ÄÜSPI */
+	/* ä½¿èƒ½SPI */
 	SPI_Cmd(SPI3, ENABLE);
-	/* Ê¹ÄÜSPI½ÓÊÕÖĞ¶Ï */
+	/* ä½¿èƒ½SPIæ¥æ”¶ä¸­æ–­ */
 	SPI_I2S_ITConfig(SPI3, SPI_I2S_IT_RXNE, ENABLE);
-	/* ³õÊ¼»¯SPIÖĞ¶Ï */
-	NVIC_InitStruct.NVIC_IRQChannel = SPI3_IRQn;//SPI3 È«¾ÖÖĞ¶Ï
-	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 1;//ÏÈÕ¼ÓÅÏÈ¼¶
-	NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;//´ÓÓÅÏÈ¼¶
+	/* åˆå§‹åŒ–SPIä¸­æ–­ */
+	NVIC_InitStruct.NVIC_IRQChannel = SPI3_IRQn;//SPI3 å…¨å±€ä¸­æ–­
+	NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 1;//å…ˆå ä¼˜å…ˆçº§
+	NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;//ä»ä¼˜å…ˆçº§
 	NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStruct);
 }
@@ -62,12 +62,12 @@ void Bc7210_Init(void)
 	Bc7210_SPIInit();
 }
 
-/* SPI1ÖĞ¶Ï·şÎñº¯Êı */
+/* SPI1ä¸­æ–­æœåŠ¡å‡½æ•° */
 void IR_SPI_IRQHandler(void)
 {
 	if (SPI_I2S_GetITStatus(SPI3, SPI_I2S_IT_RXNE)) 
 	{
-		/* ¶ÁÈ¡Êı¾İ±ã»áÇå¿Õ±êÖ¾ */
+		/* è¯»å–æ•°æ®ä¾¿ä¼šæ¸…ç©ºæ ‡å¿— */
 		ir_data.ir_buff[ir_data.ir_len++] = SPI_I2S_ReceiveData(SPI3);
 		if (ir_data.ir_len >= 3) 
 		{
@@ -78,35 +78,35 @@ void IR_SPI_IRQHandler(void)
 }
 
 /*
-	* º¯ÊıÃû³Æ   £º IR_DataKey
-	* º¯Êı¹¦ÄÜ   £º »ñÈ¡ºìÍâÒ£¿ØÆ÷µÄ°´¼üÖµ
-	* º¯ÊıĞÎ²Î   £º ÎŞ
-	* º¯Êı·µ»ØÖµ £º ÎŞ°´¼ü°´ÏÂ·µ»Ø0,ÓĞ°´¼ü°´ÏÂ·µ»Ø°´¼üÖµ
-	* º¯ÊıÃèÊö   £º ÎŞ
+	* å‡½æ•°åç§°   ï¼š IR_DataKey
+	* å‡½æ•°åŠŸèƒ½   ï¼š è·å–çº¢å¤–é¥æ§å™¨çš„æŒ‰é”®å€¼
+	* å‡½æ•°å½¢å‚   ï¼š æ— 
+	* å‡½æ•°è¿”å›å€¼ ï¼š æ— æŒ‰é”®æŒ‰ä¸‹è¿”å›0,æœ‰æŒ‰é”®æŒ‰ä¸‹è¿”å›æŒ‰é”®å€¼
+	* å‡½æ•°æè¿°   ï¼š æ— 
 */
 uint8_t IR_DataKey(void)
 {
-	static uint8_t key_value = 0;	//ºìÍâÒ£¿ØÆ÷°´¼üÖµ
-	static uint8_t key_flag = 0;	//ºìÍâÒ£¿ØÆ÷°´¼ü°´ÏÂ±êÖ¾
+	static uint8_t key_value = 0;	//çº¢å¤–é¥æ§å™¨æŒ‰é”®å€¼
+	static uint8_t key_flag = 0;	//çº¢å¤–é¥æ§å™¨æŒ‰é”®æŒ‰ä¸‹æ ‡å¿—
 	switch (key_flag) 
 	{
-		case 0://µ±°´¼ü°´ÏÂÊ±
+		case 0://å½“æŒ‰é”®æŒ‰ä¸‹æ—¶
 			if ( !IR_ACT_IN() && ir_data.ir_flag ) 
 			{	
-				//µ±°´¼ü°´ÏÂ,IR_ACT±äÎªµÍµçÆ½,ºìÍâ½ÓÊÕÊı¾İÍê³É±êÖ¾ÖÃ1
+				//å½“æŒ‰é”®æŒ‰ä¸‹,IR_ACTå˜ä¸ºä½ç”µå¹³,çº¢å¤–æ¥æ”¶æ•°æ®å®Œæˆæ ‡å¿—ç½®1
 				if ( ir_data.ir_buff[0]+ir_data.ir_buff[1]==0xff ) 
 				{	
-					//½øĞĞĞ£Ñé					
+					//è¿›è¡Œæ ¡éªŒ					
 					key_value = ir_data.ir_buff[2];
 				}	
-				ir_data.ir_flag = 0;//Çå¿ÕºìÍâ½ÓÊÕÊı¾İÍê³É±êÖ¾
+				ir_data.ir_flag = 0;//æ¸…ç©ºçº¢å¤–æ¥æ”¶æ•°æ®å®Œæˆæ ‡å¿—
 				key_flag = 1;
 			}
 			break;
-		case 1://µ±°´¼üËÉÊÖÊ±
+		case 1://å½“æŒ‰é”®æ¾æ‰‹æ—¶
 			if ( IR_ACT_IN() || key_value==0x44 || key_value==0x40) 
 			{ 
-				//µ±°´¼üËÉ¿ª,IR_ACTÎª¸ßµçÆ½
+				//å½“æŒ‰é”®æ¾å¼€,IR_ACTä¸ºé«˜ç”µå¹³
 				key_flag = 0;
 				key_value = 0;
 			}
@@ -116,21 +116,21 @@ uint8_t IR_DataKey(void)
 }
 
 /*
-ºìÍâÒ£¿ØÆ÷°´¼ü--¶ÔÓ¦Ğ¡³µ¶¯×÷
-	<<			Ñ¡ÔñÉÏÒ»¸ö¹¤×÷Ä£Ê½
-	>>			Ñ¡ÔñÏÂÒ»¸ö¹¤×÷Ä£Ê½
-	+			ÔÆÌ¨ÏòÉÏ
-	100+		ÔÆÌ¨ÏòÏÂ
-	0			ÔÆÌ¨Ïò×ó
-	200+		ÔÆÌ¨ÏòÓÒ
-	2			Ğ¡³µÇ°½ø
-	8			Ğ¡³µºóÍË
-	4			Ğ¡³µ×óÒÆ
-	6			Ğ¡³µÓÒÒÆ
-	7			Ğ¡³µ×óĞı
-	9			Ğ¡³µÓÒĞı
-	1			Ğ¡³µ×ó×ª
-	3			Ğ¡³µÓÒ×ª
+çº¢å¤–é¥æ§å™¨æŒ‰é”®--å¯¹åº”å°è½¦åŠ¨ä½œ
+	<<			é€‰æ‹©ä¸Šä¸€ä¸ªå·¥ä½œæ¨¡å¼
+	>>			é€‰æ‹©ä¸‹ä¸€ä¸ªå·¥ä½œæ¨¡å¼
+	+			äº‘å°å‘ä¸Š
+	100+		äº‘å°å‘ä¸‹
+	0			äº‘å°å‘å·¦
+	200+		äº‘å°å‘å³
+	2			å°è½¦å‰è¿›
+	8			å°è½¦åé€€
+	4			å°è½¦å·¦ç§»
+	6			å°è½¦å³ç§»
+	7			å°è½¦å·¦æ—‹
+	9			å°è½¦å³æ—‹
+	1			å°è½¦å·¦è½¬
+	3			å°è½¦å³è½¬
 */
 void InfraredControl(void)
 {
@@ -138,8 +138,17 @@ void InfraredControl(void)
 	
 	switch (key) 
 	{
-		case 0x18: 	Motor_Forward(); 	break;
-//		case 0x5a:  // 6ÓÒ×ª
+		case 0x18: 	Motor_Forward(); 	break; // 2
+//		case 0x5a:  // 6å³è½¬
+ 		case 0x52:  Motor_Backward();     break; // 8
+        case 0x08:  Motor_MoveLeft();     break; // 4
+        case 0x5a:  Motor_MoveRight();    break; // 6
+        case 0x1c:  Motor_SpinLeft();     break; // 7
+        case 0x5e:  Motor_SpinRight();    break; // 9
+        case 0x10:  Motor_TurnLeft();     break; // 1
+        case 0x14:  Motor_TurnRight();    break; // 3
+        case 0x19:  Motor_Stop();         break; // åœæ­¢ï¼Œå‡è®¾åœæ­¢é”®ä¸º0x19
+        default:    Motor_Stop();         break; // æœªè¯†åˆ«çš„æŒ‰é”®åœæ­¢
 		
 	}
 }

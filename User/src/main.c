@@ -25,7 +25,7 @@ int main(void)
 	usart_init(115200);
 	Bc7210_Init();
 //	Voice_Init();
-//	Voice_Play(0x003);
+	//Voice_Play(0x003);
 	OLED_Init();
 	PS2_Init();
 
@@ -34,20 +34,20 @@ int main(void)
     for (int i = 0; i < 6; i++) {
         OLED_Clear();  // 清屏
         OledDisplayString(0, 0, (unsigned char*)names[i]); // 显示名字
-        Delay_ms(1000);  // 延迟1秒
+        delay_ms(1000);  // 延迟1秒
     }
 	   // 快速显示一系列图片
-    unsigned char* pictures[] = {pic1, pic3, pic1, pic1, pic1, pic1}; // 假设你有这些图片数据
+    unsigned char* pictures[] = {pic1, pic1, pic1, pic1, pic1, pic1}; // 假设你有这些图片数据
     int num_pictures = 6; // 图片数量
     
     for (int i = 0; i < num_pictures; i++) {
         OLED_Clear();  // 清屏
         OLED_DrawBMP(0, 0, 64, 8, pictures[i]); // 显示图片
-        Delay_ms(200);  // 延迟200毫秒
+        delay_ms(200);  // 延迟200毫秒
     }
 
-//	void OledDisplayString(char page,char colum,unsigned char *str)
-//OledDisplayString(1,10,"张是e景z超信哈");
+	//	void OledDisplayString(char page,char colum,unsigned char *str)
+	//OledDisplayString(1,10,"张是e景z超信哈");
 	OLED_DrawBMP(0,0,64,7,pic); //0,0位置显示64*64图片
 	while (1) 
 	{
