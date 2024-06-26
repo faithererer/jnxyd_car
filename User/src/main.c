@@ -37,7 +37,7 @@ int main(void)
         Delay_ms(1000);  // 延迟1秒
     }
 	   // 快速显示一系列图片
-    unsigned char* pictures[] = {pic1, pic1, pic2, pic1, pic1, pic1}; // 假设你有这些图片数据
+    unsigned char* pictures[] = {pic1, pic1, pic1, pic1, pic1, pic1}; // 假设你有这些图片数据
     int num_pictures = 6; // 图片数量
     
     for (int i = 0; i < num_pictures; i++) {
