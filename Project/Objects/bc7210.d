@@ -36,3 +36,4 @@
 .\objects\bc7210.o: ..\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dcmi.h
 .\objects\bc7210.o: ..\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fsmc.h
 .\objects\bc7210.o: ..\User\inc\motor.h
+.\objects\bc7210.o: ..\User\inc\voice.h

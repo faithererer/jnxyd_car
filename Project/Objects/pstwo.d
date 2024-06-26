@@ -37,3 +37,4 @@
 .\objects\pstwo.o: ..\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fsmc.h
 .\objects\pstwo.o: ..\User\inc\timer.h
 .\objects\pstwo.o: ..\User\inc\motor.h
+.\objects\pstwo.o: ..\User\inc\voice.h

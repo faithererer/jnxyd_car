@@ -23,7 +23,7 @@
 	0x14 单个文件夹支持1000首曲目 
 	0x15 停止插播播放背景音乐
 	0x16 停止
-	0x17 指定文件夹循环播放 
+	0x17 指定文件夹循环播放  
 	0x18 指定整个设备随机播放 
 	0x19 对当前播放的曲目设置为循环播放 
 	0x1A 开启和关闭芯片的 DAC 输出 
@@ -41,7 +41,6 @@ void Voice_GPIOInit(void);
 void Voice_UARTInit(void);
 void VoiceSendCMD(uint8_t cmd ,uint8_t feedback ,uint16_t dat);
 int VoiceCheckACK(uint8_t cmd ,uint8_t feedback ,uint16_t dat);
-
 
 #endif
 

@@ -1,5 +1,6 @@
 #include "bc7210.h"
 #include "motor.h"
+#include "voice.h"
 
 infrared_t ir_data;
 
@@ -132,24 +133,86 @@ uint8_t IR_DataKey(void)
 	1			小车左转
 	3			小车右转
 */
+
 void InfraredControl(void)
 {
-	uint8_t key = IR_DataKey();
-	
-	switch (key) 
-	{
-		case 0x18: 	Motor_Forward(); 	break; // 2
-//		case 0x5a:  // 6右转
- 		case 0x52:  Motor_Backward();     break; // 8
-        case 0x08:  Motor_MoveLeft();     break; // 4
-        case 0x5a:  Motor_MoveRight();    break; // 6
-        case 0x1c:  Motor_SpinLeft();     break; // 7
-        case 0x5e:  Motor_SpinRight();    break; // 9
-        case 0x10:  Motor_TurnLeft();     break; // 1
-        case 0x14:  Motor_TurnRight();    break; // 3
-        case 0x19:  Motor_Stop();         break; // 停止，假设停止键为0x19
-        default:    Motor_Stop();         break; // 未识别的按键停止
-		
-	}
+    uint8_t key = IR_DataKey();
+    
+    switch (key) 
+    {
+        case 0x18:  
+            Motor_Forward();
+            Voice_Play(1); // 播放前进音频
+            break; // 2
+        case 0x52:  
+            Motor_Backward();
+            Voice_Play(2); // 播放后退音频
+            break; // 8
+        case 0x08:  
+            Motor_MoveLeft();
+            Voice_Play(3); // 播放左移音频
+            break; // 4
+        case 0x5a:  
+            Motor_MoveRight();
+            Voice_Play(4); // 播放右移音频
+            break; // 6
+        case 0x1c:  
+            Motor_SpinLeft();
+            Voice_Play(5); // 播放左旋音频
+            break; // 7
+        case 0x5e:  
+            Motor_SpinRight();
+            Voice_Play(6); // 播放右旋音频
+            break; // 9
+        case 0x10:  
+            Motor_TurnLeft();
+            Voice_Play(7); // 播放左转音频
+            break; // 1
+        case 0x14:  
+            Motor_TurnRight();
+            Voice_Play(8); // 播放右转音频
+            break; // 3
+        case 0x19:  
+            Motor_Stop();
+            Voice_Play(9); // 播放停止音频
+            break; // 停止，假设停止键为0x19
+        default:    
+            Motor_Stop();
+            Voice_Play(9); // 未识别的按键播放停止音频
+            break;
+    }
 }
+
+/**
+前进音频
+后退音频
+左移音频
+右移音频
+左旋音频
+右旋音频
+左转音频
+右转音频
+停止音频
+*/
+
+// void InfraredControl(void)
+// {
+// 	uint8_t key = IR_DataKey();
+	
+// 	switch (key) 
+// 	{
+// 		case 0x18: 	Motor_Forward(); 	break; // 2
+// //		case 0x5a:  // 6右转
+//  		case 0x52:  Motor_Backward();     break; // 8
+//         case 0x08:  Motor_MoveLeft();     break; // 4
+//         case 0x5a:  Motor_MoveRight();    break; // 6
+//         case 0x1c:  Motor_SpinLeft();     break; // 7
+//         case 0x5e:  Motor_SpinRight();    break; // 9
+//         case 0x10:  Motor_TurnLeft();     break; // 1
+//         case 0x14:  Motor_TurnRight();    break; // 3
+//         case 0x19:  Motor_Stop();         break; // 停止，假设停止键为0x19
+//         default:    Motor_Stop();         break; // 未识别的按键停止
+		
+// 	}
+//}
 

@@ -1,10 +1,11 @@
 #include "pstwo.h"
+#include "voice.h"
 typedef uint8_t u8;
 typedef uint16_t u16;
 
 static uint16_t Handkey;
-static uint8_t PS2_Comd[2]={0x01,0x42};	//¿ªÊ¼ÃüÁî¡£ÇëÇóÊı¾İ
-static uint8_t PS2_Data[9]={0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; //Êı¾İ´æ´¢Êı×é
+static uint8_t PS2_Comd[2]={0x01,0x42};	//å¼€å§‹å‘½ä»¤ã€‚è¯·æ±‚æ•°æ®
+static uint8_t PS2_Data[9]={0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; //æ•°æ®å­˜å‚¨æ•°ç»„
 static uint16_t PS2_MASK[]={
     PSB_SELECT,
     PSB_L3,
@@ -22,40 +23,40 @@ static uint16_t PS2_MASK[]={
     PSB_RED,
     PSB_BLUE,
     PSB_PINK
-};	//°´¼üÖµÓë°´¼üÃ÷
+};	//æŒ‰é”®å€¼ä¸æŒ‰é”®æ˜
 
 	
-/* ÊÖ±ú½Ó¿Ú³õÊ¼»¯ */
+/* æ‰‹æŸ„æ¥å£åˆå§‹åŒ– */
 void PS2_Init(void)
 {
 	
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
-	/* Ê¹ÓÃGPIOBÊ±ÖÓ */
+	/* ä½¿ç”¨GPIOBæ—¶é’Ÿ */
 	RCC_AHB1PeriphClockCmd(PS2_CS_CLK|PS2_SCLK_CLK|PS2_MOSI_CLK|PS2_MISO_CLK, ENABLE);
 	
-	/* ÅäÖÃPS2_MISOÒı½Å£ºÏÂÀ­ÊäÈëÄ£Ê½ */
+	/* é…ç½®PS2_MISOå¼•è„šï¼šä¸‹æ‹‰è¾“å…¥æ¨¡å¼ */
 	GPIO_InitStruct.GPIO_Pin = PS2_MISO_PIN;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
 	GPIO_Init(PS2_MISO_PORT, &GPIO_InitStruct);
 
-	/* ÅäÖÃPS2_MOSIÒı½Å£ºÆÕÍ¨ÍÆÍìÄ£Ê½ */
+	/* é…ç½®PS2_MOSIå¼•è„šï¼šæ™®é€šæ¨æŒ½æ¨¡å¼ */
 	GPIO_InitStruct.GPIO_Pin = PS2_MOSI_PIN;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(PS2_MOSI_PORT, &GPIO_InitStruct);	
 	
-	/* ÅäÖÃPS2_SCLKÒı½Å£ºÆÕÍ¨ÍÆÍìÄ£Ê½ */
+	/* é…ç½®PS2_SCLKå¼•è„šï¼šæ™®é€šæ¨æŒ½æ¨¡å¼ */
 	GPIO_InitStruct.GPIO_Pin = PS2_SCLK_PIN;
 	GPIO_Init(PS2_SCLK_PORT, &GPIO_InitStruct);	
 	
-	/* ÅäÖÃPS2_CSÒı½Å£ºÆÕÍ¨ÍÆÍìÄ£Ê½ */
+	/* é…ç½®PS2_CSå¼•è„šï¼šæ™®é€šæ¨æŒ½æ¨¡å¼ */
 	GPIO_InitStruct.GPIO_Pin = PS2_CS_PIN;
 	GPIO_Init(PS2_CS_PORT, &GPIO_InitStruct);	
 }
 
-/* ÏòÊÖ±ú·¢ËÍÃüÁî */
+/* å‘æ‰‹æŸ„å‘é€å‘½ä»¤ */
 static void PS2_Cmd(u8 CMD)
 {
 	volatile u16 ref=0x01;
@@ -64,11 +65,11 @@ static void PS2_Cmd(u8 CMD)
 	{
 		if(ref&CMD)
 		{
-			DO_H;                   //Êä³öÒ»Î»¿ØÖÆÎ»
+			DO_H;                   //è¾“å‡ºä¸€ä½æ§åˆ¶ä½
 		}
 		else DO_L;
 
-		CLK_H;                        //Ê±ÖÓÀ­¸ß
+		CLK_H;                        //æ—¶é’Ÿæ‹‰é«˜
 		delay_us(10);
 		CLK_L;
 		delay_us(10);
@@ -81,19 +82,19 @@ static void PS2_Cmd(u8 CMD)
 
 
 
-//ÅĞ¶ÏÊÇ·ñÎªºìµÆÄ£Ê½
-//·µ»ØÖµ£»0£¬ºìµÆÄ£Ê½
-//		  ÆäËû£¬ÆäËûÄ£Ê½
+//åˆ¤æ–­æ˜¯å¦ä¸ºçº¢ç¯æ¨¡å¼
+//è¿”å›å€¼ï¼›0ï¼Œçº¢ç¯æ¨¡å¼
+//		  å…¶ä»–ï¼Œå…¶ä»–æ¨¡å¼
 uint8_t PS2_RedLight(void)
 {
 	CS_L;
-	PS2_Cmd(PS2_Comd[0]);  //¿ªÊ¼ÃüÁî
-	PS2_Cmd(PS2_Comd[1]);  //ÇëÇóÊı¾İ
+	PS2_Cmd(PS2_Comd[0]);  //å¼€å§‹å‘½ä»¤
+	PS2_Cmd(PS2_Comd[1]);  //è¯·æ±‚æ•°æ®
 	CS_H;
 	if( PS2_Data[1] == 0X73)   return 0 ;
 	else return 1;
 }
-//¶ÁÈ¡ÊÖ±úÊı¾İ
+//è¯»å–æ‰‹æŸ„æ•°æ®
 static void PS2_ReadData(void)
 {
 	volatile u8 byte=0;
@@ -101,10 +102,10 @@ static void PS2_ReadData(void)
 
 	CS_L;
 
-	PS2_Cmd(PS2_Comd[0]);  //¿ªÊ¼ÃüÁî
-	PS2_Cmd(PS2_Comd[1]);  //ÇëÇóÊı¾İ
+	PS2_Cmd(PS2_Comd[0]);  //å¼€å§‹å‘½ä»¤
+	PS2_Cmd(PS2_Comd[1]);  //è¯·æ±‚æ•°æ®
 
-	for(byte=2;byte<9;byte++)          //¿ªÊ¼½ÓÊÜÊı¾İ
+	for(byte=2;byte<9;byte++)          //å¼€å§‹æ¥å—æ•°æ®
 	{
 		for(ref=0x01;ref<0x100;ref<<=1)
 		{
@@ -121,7 +122,7 @@ static void PS2_ReadData(void)
 	CS_H;	
 }
 
-//Çå³ıÊı¾İ»º³åÇø
+//æ¸…é™¤æ•°æ®ç¼“å†²åŒº
 static void PS2_ClearData()
 {
 	u8 a;
@@ -129,8 +130,8 @@ static void PS2_ClearData()
 		PS2_Data[a]=0x00;
 }
 
-//¶Ô¶Á³öÀ´µÄPS2µÄÊı¾İ½øĞĞ´¦Àí      Ö»´¦ÀíÁË°´¼ü²¿·Ö         Ä¬ÈÏÊı¾İÊÇºìµÆÄ£Ê½  Ö»ÓĞÒ»¸ö°´¼ü°´ÏÂÊ±
-//°´ÏÂÎª0£¬ Î´°´ÏÂÎª1s
+//å¯¹è¯»å‡ºæ¥çš„PS2çš„æ•°æ®è¿›è¡Œå¤„ç†      åªå¤„ç†äº†æŒ‰é”®éƒ¨åˆ†         é»˜è®¤æ•°æ®æ˜¯çº¢ç¯æ¨¡å¼  åªæœ‰ä¸€ä¸ªæŒ‰é”®æŒ‰ä¸‹æ—¶
+//æŒ‰ä¸‹ä¸º0ï¼Œ æœªæŒ‰ä¸‹ä¸º1s
 uint8_t PS2_DataKey(void)
 {
 	u8 index;
@@ -139,8 +140,8 @@ uint8_t PS2_DataKey(void)
 	PS2_ClearData();
 	PS2_ReadData();
 
-	Handkey=(PS2_Data[4]<<8)|PS2_Data[3];     //ÕâÊÇ16¸ö°´¼ü  °´ÏÂÎª0£¬ Î´°´ÏÂÎª1
-	if (Handkey==0) return 0;                 //°´¼üÈ«²¿°´ÏÂ²ÅÎª0£¨£©
+	Handkey=(PS2_Data[4]<<8)|PS2_Data[3];     //è¿™æ˜¯16ä¸ªæŒ‰é”®  æŒ‰ä¸‹ä¸º0ï¼Œ æœªæŒ‰ä¸‹ä¸º1
+	if (Handkey==0) return 0;                 //æŒ‰é”®å…¨éƒ¨æŒ‰ä¸‹æ‰ä¸º0ï¼ˆï¼‰
 	
 	for(index=0;index<16;index++)
 	{	    
@@ -148,22 +149,22 @@ uint8_t PS2_DataKey(void)
 		{
 			if (index+1==PSB_SELECT && first_press==0) 
 			{	
-				//µ±¼üÖµÎªSELECTÇÒÊ×´Î°´ÏÂÊ±	
+				//å½“é”®å€¼ä¸ºSELECTä¸”é¦–æ¬¡æŒ‰ä¸‹æ—¶	
 				first_press = 1;
 			}	
 			else if (index+1==PSB_SELECT && first_press==1 ) 
 			{	
-				//µ±¼üÖµÎªSELECTÇÒÒ»Ö±°´ÏÂÊ±
+				//å½“é”®å€¼ä¸ºSELECTä¸”ä¸€ç›´æŒ‰ä¸‹æ—¶
 				return 0;
 			}
 			return index+1;
 		}
 	}
 	first_press = 0;
-	return 0;          //Ã»ÓĞÈÎºÎ°´¼ü°´ÏÂ
+	return 0;          //æ²¡æœ‰ä»»ä½•æŒ‰é”®æŒ‰ä¸‹
 }
 
-//µÃµ½Ò»¸öÒ¡¸ËµÄÄ£ÄâÁ¿	 ·¶Î§0~256
+//å¾—åˆ°ä¸€ä¸ªæ‘‡æ†çš„æ¨¡æ‹Ÿé‡	 èŒƒå›´0~256
 uint8_t PS2_AnologData(uint8_t button)
 {
 	return PS2_Data[button];
@@ -184,6 +185,7 @@ u8 err[50] = {0};
 //		default: 	        Motor_Stop(); 	break;
 //	}
 //}
+
 void PstwoControl(void)
 {
     if (sys_now() % 10 != 0)
@@ -194,44 +196,92 @@ void PstwoControl(void)
     switch (key)
     {
         case PSB_PAD_UP:
-            Motor_Forward();    // Ç°½ø
+            Motor_Forward();    // å‰è¿›
+            Voice_Play(1);      // æ’­æ”¾å‰è¿›éŸ³é¢‘
             break;
         case PSB_PAD_DOWN:
-            Motor_Backward();   // ºóÍË
+            Motor_Backward();   // åé€€
+            Voice_Play(2);      // æ’­æ”¾åé€€éŸ³é¢‘
             break;
         case PSB_PAD_LEFT:
-            Motor_MoveLeft();   // ×óÒÆ
+            Motor_MoveLeft();   // å·¦ç§»
+            Voice_Play(3);      // æ’­æ”¾å·¦ç§»éŸ³é¢‘
             break;
         case PSB_PAD_RIGHT:
-            Motor_MoveRight();  // ÓÒÒÆ
+            Motor_MoveRight();  // å³ç§»
+            Voice_Play(4);      // æ’­æ”¾å³ç§»éŸ³é¢‘
             break;
         case PSB_R1:
-            Motor_TurnRight();  // ÓÒ×ª
+            Motor_TurnRight();  // å³è½¬
+            Voice_Play(8);      // æ’­æ”¾å³è½¬éŸ³é¢‘
             break;
         case PSB_L1:
-            Motor_TurnLeft();   // ×ó×ª
+            Motor_TurnLeft();   // å·¦è½¬
+            Voice_Play(7);      // æ’­æ”¾å·¦è½¬éŸ³é¢‘
             break;
         case PSB_R2:
-            Motor_SpinRight();  // ÓÒĞı
+            Motor_SpinRight();  // å³æ—‹
+            Voice_Play(6);      // æ’­æ”¾å³æ—‹éŸ³é¢‘
             break;
         case PSB_L2:
-            Motor_SpinLeft();   // ×óĞı
+            Motor_SpinLeft();   // å·¦æ—‹
+            Voice_Play(5);      // æ’­æ”¾å·¦æ—‹éŸ³é¢‘
             break;
         default:
-            Motor_Stop();       // Ä¬ÈÏÍ£Ö¹
+            Motor_Stop();       // é»˜è®¤åœæ­¢
+            Voice_Play(9);      // æ’­æ”¾åœæ­¢éŸ³é¢‘
             break;
     }
 }
 
+// void PstwoControl(void)
+// {
+//     if (sys_now() % 10 != 0)
+//         return;
+
+//     uint8_t key = PS2_DataKey();
+
+//     switch (key)
+//     {
+//         case PSB_PAD_UP:
+//             Motor_Forward();    // å‰è¿›
+//             break;
+//         case PSB_PAD_DOWN:
+//             Motor_Backward();   // åé€€
+//             break;
+//         case PSB_PAD_LEFT:
+//             Motor_MoveLeft();   // å·¦ç§»
+//             break;
+//         case PSB_PAD_RIGHT:
+//             Motor_MoveRight();  // å³ç§»
+//             break;
+//         case PSB_R1:
+//             Motor_TurnRight();  // å³è½¬
+//             break;
+//         case PSB_L1:
+//             Motor_TurnLeft();   // å·¦è½¬
+//             break;
+//         case PSB_R2:
+//             Motor_SpinRight();  // å³æ—‹
+//             break;
+//         case PSB_L2:
+//             Motor_SpinLeft();   // å·¦æ—‹
+//             break;
+//         default:
+//             Motor_Stop();       // é»˜è®¤åœæ­¢
+//             break;
+//     }
+// }
+
 static uint32_t sys_ticks;
-/* »ñÈ¡ÏµÍ³Ê±¼äºÁÃëÊı (lwipĞ­ÒéÕ»ÒªÇóÊµÏÖµÄº¯Êı) */
-// ¸Ãº¯Êı±ØĞë±£Ö¤: ³ı·Ç¶¨Ê±Æ÷Òç³ö, ·ñÔòºó»ñÈ¡µÄÊ±¼ä±ØĞë´óÓÚÏÈ»ñÈ¡µÄÊ±¼ä
+/* è·å–ç³»ç»Ÿæ—¶é—´æ¯«ç§’æ•° (lwipåè®®æ ˆè¦æ±‚å®ç°çš„å‡½æ•°) */
+// è¯¥å‡½æ•°å¿…é¡»ä¿è¯: é™¤éå®šæ—¶å™¨æº¢å‡º, å¦åˆ™åè·å–çš„æ—¶é—´å¿…é¡»å¤§äºå…ˆè·å–çš„æ—¶é—´
 uint32_t sys_now(void)
 {
   return sys_ticks;
 }
 
-/* ³õÊ¼»¯ÏµÍ³Ê±¼äºÁÃë¼ÆÊıÆ÷ */
+/* åˆå§‹åŒ–ç³»ç»Ÿæ—¶é—´æ¯«ç§’è®¡æ•°å™¨ */
 void sys_now_init(void)
 {
   SysTick_Config(SystemCoreClock / 1000);
