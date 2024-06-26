@@ -20,7 +20,7 @@ int main(void)
 	RGBLed_Init();
 	TIM6_Delay_Init();
 	Key_Init();
- 	Motor_Init();//µç»ú³õÊ¼»¯
+ 	Motor_Init();//ç”µæœºåˆå§‹åŒ–
 	Motor_SetSpeed(3);
 	usart_init(115200);
 	Bc7210_Init();
@@ -29,26 +29,26 @@ int main(void)
 	OLED_Init();
 	PS2_Init();
 
-  // ÏÔÊ¾Áù¸öÈËµÄÃû×Ö
+  // æ˜¾ç¤ºå…­ä¸ªäººçš„åå­—
     char* names[] = {"Alice", "Bob", "Charlie", "David", "Eve", "Frank"};
     for (int i = 0; i < 6; i++) {
-        OLED_Clear();  // ÇåÆÁ
-        OledDisplayString(0, 0, (unsigned char*)names[i]); // ÏÔÊ¾Ãû×Ö
-        Delay_ms(1000);  // ÑÓ³Ù1Ãë
+        OLED_Clear();  // æ¸…å±
+        OledDisplayString(0, 0, (unsigned char*)names[i]); // æ˜¾ç¤ºåå­—
+        Delay_ms(1000);  // å»¶è¿Ÿ1ç§’
     }
-	   // ¿ìËÙÏÔÊ¾Ò»ÏµÁĞÍ¼Æ¬
-    unsigned char* pictures[] = {pic1, pic1, pic1, pic1, pic1, pic1}; // ¼ÙÉèÄãÓĞÕâĞ©Í¼Æ¬Êı¾İ
-    int num_pictures = 6; // Í¼Æ¬ÊıÁ¿
+	   // å¿«é€Ÿæ˜¾ç¤ºä¸€ç³»åˆ—å›¾ç‰‡
+    unsigned char* pictures[] = {pic1, pic1, pic2, pic1, pic1, pic1}; // å‡è®¾ä½ æœ‰è¿™äº›å›¾ç‰‡æ•°æ®
+    int num_pictures = 6; // å›¾ç‰‡æ•°é‡
     
     for (int i = 0; i < num_pictures; i++) {
-        OLED_Clear();  // ÇåÆÁ
-        OLED_DrawBMP(0, 0, 64, 8, pictures[i]); // ÏÔÊ¾Í¼Æ¬
-        Delay_ms(200);  // ÑÓ³Ù200ºÁÃë
+        OLED_Clear();  // æ¸…å±
+        OLED_DrawBMP(0, 0, 64, 8, pictures[i]); // æ˜¾ç¤ºå›¾ç‰‡
+        Delay_ms(200);  // å»¶è¿Ÿ200æ¯«ç§’
     }
 
 //	void OledDisplayString(char page,char colum,unsigned char *str)
-//OledDisplayString(1,10,"ÕÅÊÇe¾°z³¬ĞÅ¹ş");
-	OLED_DrawBMP(0,0,64,7,pic); //0,0Î»ÖÃÏÔÊ¾64*64Í¼Æ¬
+//OledDisplayString(1,10,"å¼ æ˜¯eæ™¯zè¶…ä¿¡å“ˆ");
+	OLED_DrawBMP(0,0,64,7,pic); //0,0ä½ç½®æ˜¾ç¤º64*64å›¾ç‰‡
 	while (1) 
 	{
 //		Tim6_Delay_ms(30);
@@ -59,15 +59,15 @@ int main(void)
 
 
 /*
-ºêÓÃÓÚº¯ÊıµÄ²ÎÊı¼ì²é
-Èç¹ûexprÎªfalse£¬Ôòµ÷ÓÃassert_failedº¯Êı±¨¸æÔ´ÎÄ¼şµÄÃû³ÆºÍÊ§°Üµ÷ÓÃµÄÔ´ĞĞºÅ
-Èç¹ûexprÎªtrue£¬Ôò²»·µ»ØÈÎºÎÖµ¡£
+å®ç”¨äºå‡½æ•°çš„å‚æ•°æ£€æŸ¥
+å¦‚æœexprä¸ºfalseï¼Œåˆ™è°ƒç”¨assert_failedå‡½æ•°æŠ¥å‘Šæºæ–‡ä»¶çš„åç§°å’Œå¤±è´¥è°ƒç”¨çš„æºè¡Œå·
+å¦‚æœexprä¸ºtrueï¼Œåˆ™ä¸è¿”å›ä»»ä½•å€¼ã€‚
 */
 #ifdef USE_FULL_ASSERT
 void assert_failed(uint8_t *file, uint32_t line)
 {
 	printf("%s: file %s on line %d\r\n", __FUNCTION__, file, line);
-	abort();      //ÖÕÖ¹³ÌĞò
+	abort();      //ç»ˆæ­¢ç¨‹åº
 }
 #endif
 
