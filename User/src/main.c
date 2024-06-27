@@ -30,7 +30,11 @@ int main(void)
 	PS2_Init();
 
 	// 快速显示一系列图片
-    unsigned char* pictures[] = {pic1, pic1, pic1, pic1, pic1, pic1}; // 假设你有这些图片数据
+	
+unsigned char* pictures[] = {pic_bmp1, pic_bmp2, pic_bmp3, pic_bmp4, pic_bmp5, 
+                             pic_bmp6, pic_bmp7, pic_bmp8, pic_bmp9, pic_bmp10,
+                             pic_bmp11, pic_bmp12, pic_bmp13, pic_bmp14, pic_bmp15,
+                             pic_bmp16, pic_bmp17, pic_bmp18, pic_bmp19};
     int num_pictures = 6; // 图片数量
     
     for (int i = 0; i < num_pictures; i++) {
@@ -39,9 +43,9 @@ int main(void)
         delay_ms(200);  // 延迟200毫秒
     }
 
-  // 显示六个人的名字
-    char* names[] = {"张景超", "Bob", "Charlie", "David", "Eve", "Frank"};
-    for (int i = 0; i < 6; i++) {
+  // 显示7个人的名字
+    char* names[] = {"张景超", "Bob", "Charlie", "David", "Eve", "Frank","s"};
+    for (int i = 0; i < 7; i++) {
         OLED_Clear();  // 清屏
         OledDisplayString(0, 0, (unsigned char*)names[i]); // 显示名字
         delay_ms(1000);  // 延迟1秒

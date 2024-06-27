@@ -8,6 +8,8 @@
         "usart.h": "c",
         "motor.h": "c",
         "pstwo.h": "c",
-        "bc7210.h": "c"
+        "bc7210.h": "c",
+        "gpio.h": "c",
+        "pic.h": "c"
     }
 }
