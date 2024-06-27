@@ -44,7 +44,7 @@ unsigned char* pictures[] = {pic_bmp1, pic_bmp2, pic_bmp3, pic_bmp4, pic_bmp5,
     }
 
   // 显示7个人的名字
-    char* names[] = {"张景超", "Bob", "Charlie", "David", "Eve", "Frank","s"};
+    char* names[] = {"张景超", "彭嘉熙", "王茜泽", "薛煜柽", "单喜强", "崔晓泽","谭明杰"};
     for (int i = 0; i < 7; i++) {
         OLED_Clear();  // 清屏
         OledDisplayString(0, 0, (unsigned char*)names[i]); // 显示名字

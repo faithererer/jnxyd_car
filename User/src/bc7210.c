@@ -192,7 +192,7 @@ void InfraredControl(void)
 右旋音频
 左转音频
 右转音频
-停止音频
+
 */
 
 // void InfraredControl(void)
