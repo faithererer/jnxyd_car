@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "*.cpp": "cpp",
+        "timer.h": "c",
+        "oled.h": "c",
+        "sr04.h": "c",
+        "voice.h": "c",
+        "usart.h": "c",
+        "motor.h": "c",
+        "pstwo.h": "c",
+        "bc7210.h": "c",
+        "gpio.h": "c",
+        "pic.h": "c",
+        "ps2_control.h": "c",
+        "infrared_control.h": "c",
+        "control.h": "c"
+    }
+}
